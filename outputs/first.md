@@ -1,1 +1,0 @@
-# Klasör oluşturmak için
