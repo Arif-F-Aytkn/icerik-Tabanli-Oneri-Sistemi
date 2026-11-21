@@ -1,31 +1,33 @@
 ## Benchmarking / Literatür Karşılaştırması
 
-Bu projede geliştirilen yaklaşım ve elde edilen bulgular, Kaggle platformunda **Netflix Movies and TV Shows Dataset** üzerinde en yüksek etkileşimi (upvote) almış öne çıkan topluluk çalışmalarıyla (örn. *Joshua Swords - Netflix Data Visualization*, *Niharika Pandit - Netflix Visualizations & Recommendation*) kıyaslanmış ve aşağıdaki boyutlarda değerlendirilmiştir.
+Bu çalışmada, Kaggle platformunda **Netflix Movies and TV Shows Dataset** üzerinde en yüksek etkileşimi almış 2 temel çalışma incelenmiş ve karşılaştırmalı analize tabi tutulmuştur:
+
+* **Çalışma 1:** *Netflix Data Visualization* (Joshua Swords)
+* **Çalışma 2:** *Netflix Visualizations, Recommendation & EDA* (Niharika Pandit)
 
 ---
 
 ### 1. Görselleştirme Teknikleri ve Sunum
-* **Topluluk Çalışmaları:** Kaggle üzerindeki popüler defterler ağırlıklı olarak görsel anlatıma odaklanmıştır. Görselleştirmelerde `Matplotlib`, `Seaborne`, interaktif grafikler için `Plotly` ve metin madenciliği görselleştirmesi için `WordCloud` yaygın olarak kullanılmıştır.
-* **Değerlendirme:** Görsel çeşitlilik ve estetik seviyesi oldukça yüksektir. Ancak grafiklerin büyük bir kısmı sadece betimsel kalmış, grafiklerden çıkarılan içgörüler istatistiksel anlamlılık testleri ile desteklenmemiştir.
+* **Joshua Swords:** Ağırlıklı olarak `Matplotlib` ve `Seaborn` kütüphanelerini kullanarak özel renk paletleri ve tipografi ile betimsel görseller oluşturmuştur. Veri hikayeleştirme ve estetik düzen ön plandadır.
+* **Niharika Pandit:** Dinamik ve kullanıcı etkileşimli grafikler sunan `Plotly` kütüphanesini ve metin madenciliği için `WordCloud` görsellerini tercih etmiştir.
+* **Genel Topluluk Çalışmaları:** Çoğunlukla standart pasta, bar ve çizgi grafikleri kullanılmış; grafik çeşitliliği yüksek tutulsa da analizler yüzeysel seviyede kalmıştır.
 
 ---
 
-### 2. Öneri Algoritmaları ve Yöntem Seçimi
-* **Topluluk Çalışmaları:** Öneri sistemlerinde genelde metin sütunlarının (`title`, `director`, `cast`, `listed_in`, `description`) birleştirilmesiyle elde edilen "soup" metinleri üzerinde **Content-Based Filtering (İçerik Tabanlı Filtreleme)** uygulanmıştır. Vektörleştirme adımında `TF-IDF` veya `CountVectorizer` tercih edilmiş; benzerlik skoru olarak **Kosinüs Benzerliği (Cosine Similarity)** veya graf tabanlı `NetworkX` yaklaşımları kullanılmıştır.
-* **Değerlendirme:** Yaklaşımlar pratik ve işlevsel olmakla birlikte, metin matrislerinin yüksek boyutlu (d -dimensional) ve seyrek (*sparse*) yapısının matematiksel arka planı genellikle detaylandırılmamıştır.
+### 2. Öneri Algoritmaları ve Yöntem Farklılıkları
+* **Joshua Swords:** Çalışmasını temel olarak Keşifsel Veri Analizi (EDA) ve görselleştirme üzerine kurgulamış, makine öğrenmesi tabanlı bir öneri algoritmasına yer vermemiştir.
+* **Niharika Pandit:** `title`, `director`, `cast`, `listed_in` ve `description` metinlerinin birleştirilmesiyle oluşturulan metin "soup" yapısı üzerinde **İçerik Tabanlı Filtreleme (Content-Based Filtering)** uygulamıştır. Metinlerin vektörleştirilmesinde `TF-IDF` ve `CountVectorizer` tercih edilerek **Kosinüs Benzerliği (Cosine Similarity)** hesaplanmıştır.
+* **Diğer Çalışmalar:** İçerik tabanlı önerilere ek olarak bazı gelişmiş çalışmalarda oyuncu/yönetmen ilişkilerini haritalayan graf tabanlı (`NetworkX`) yaklaşımlar veya düz Python eşleşme algoritmaları kullanılmıştır. İş Birlikçi Filtreleme (Collaborative Filtering) kullanımı kullanıcı etkileşim verisinin (rating/user ID) olmaması nedeniyle tercih edilmemiştir.
 
 ---
 
 ### 3. Değerlendirme Metrikleri ve Performans Ölçümü
-* **Topluluk Çalışmaları:** Çalışmaların çoğunda öneri sistemlerinin başarısını nicel olarak ölçecek metrikler yer almamaktadır. Az sayıda gelişmiş notebook'ta `Precision@K` veya çizge tabanlı benzerlik ölçütleri (`Adamic-Adar Index`) kullanılmıştır.
-* **Değerlendirme:** Metrik kullanımı topluluk genelinde belirgin bir eksikliktir. Öneri sonuçları çoğunlukla sezgisel örnekler üzerinden doğrulanmıştır.
+* **Joshua Swords & Niharika Pandit:** Öneri çıktılarının başarısını nicel olarak ölçecek herhangi bir matematiksel değerlendirme metriğine (`Precision@K`, `Recall@K`, `MAP` vb.) yer vermemişlerdir. Doğrulama, çıktı olarak üretilen örnek başlıkların mantıksal kontrolü ile sınırlı kalmıştır.
+* **Diğer Çalışmalar:** Kaggle genelindeki notebook'ların %90'ından fazlasında metrik kullanımı eksiktir. Yalnızca kısıtlı sayıda nitelikli çalışmada çizge tabanlı `Adamic-Adar Index` veya benzerlik skorları eşik değer analizi kullanılmıştır.
 
 ---
 
-### 4. Veri Ön İşleme ve İstatistiksel Yaklaşım (Farkımız)
-* **Tespit Edilen Literatür Eksikliği:** Kaggle'daki mevcut çalışmaların neredeyse tamamı, eksik değerleri sildikten veya doldurduktan hemen sonra doğrudan makine öğrenmesi modellerine ve görselleştirmeye geçmektedir. Eksik verilerin mekanizması (MCAR, MAR, MNAR) veya değişkenler arası istatistiksel bağımlılıklar analiz edilmemiştir.
-* **Bizim Özgün Yaklaşımımız:** Bu projede klasik veri bilimi adımlarına ek olarak **İstatistiksel Hipotez Testi ve Dağılım Analizi** katmanı eklenmiştir:
-  1. **Eksik Veri Analizi:** Eksikliğin rastgeleliğini sınamak adına kategorik değişkenler arası Ki-Kare χ² bağımsızlık testleri uygulanmıştır.
-  2. **Dağılım Testleri:** Film süreleri ve dizi sezon sayılarının dağılım parametreleri (çarpıklık, basıklık) ve normallik testleri ile incelenmiştir.
-  3. **Kategorik İlişki Analizi:** Yaş grupları (`rating`) ile içerik türü (`type`) arasındaki ilişkinin istatistiksel anlamlılığı test edilmiştir.
-  4. **Vektör Uzayı Matematiği:** Öneri sistemindeki TF-IDF ve kosinüs benzerliğinin geometrik ve olasılıksal temelleri açıklanarak model kurulmuştur.
+### 4. Veri Ön İşleme Stratejileri ve Tespit Edilen Eksiklikler
+* **Eksik Değer İşleme:** İnceleyen çalışmaların büyük çoğunluğu `director`, `cast` ve `country` sütunlarındaki yüksek oranlı eksik verileri silmek veya doldurmadan analiz dışı bırakmak yoluna gitmiştir.
+* **Tip Dönüşümleri ve Ayrıştırma:** `duration` (film dakikası ve dizi sezon sayısı) sütununun sayısal olarak ayrıştırılması çoğu çalışmada yapılmış, ancak `date_added` sütunundan yıl ve ay türetme adımları bazı notebook'larda yüzeysel kalmıştır.
+* **Genel Eksiklik:** İncelenen 2 ana kaynakta da eksik verilerin veya değişkenlerin matematiksel/istatistiksel dağılım yapıları derinlemesine incelenmemiş, ön işleme adımlarından sonra doğrudan görselleştirme ve model kurma aşamasına geçilmiştir.
